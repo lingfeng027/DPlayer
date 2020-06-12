@@ -4,13 +4,6 @@ sidebar: auto
 
 # 指南
 
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/dplayer/dist/DPlayer.min.css">
-<script src="https://cdn.jsdelivr.net/npm/flv.js/dist/flv.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/hls.js/dist/hls.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/dashjs/dist/dash.all.min.js"></script>
-<script src="https://cdn.jsdelivr.net/webtorrent/latest/webtorrent.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/dplayer/dist/DPlayer.min.js"></script>
-
 # DPlayer
 
 🍭 Wow, such a lovely HTML5 danmaku video player
@@ -62,7 +55,6 @@ yarn add dplayer
 加载播放器文件:
 
 ```html
-<link rel="stylesheet" href="DPlayer.min.css" />
 <div id="dplayer"></div>
 <script src="DPlayer.min.js"></script>
 ```
@@ -70,7 +62,6 @@ yarn add dplayer
 或者使用模块管理器:
 
 ```js
-import 'dplayer/dist/DPlayer.min.css';
 import DPlayer from 'dplayer';
 
 const dp = new DPlayer(options);
@@ -103,8 +94,10 @@ DPlayer 有丰富的参数可以自定义你的播放器实例
 | lang                 | navigator.language.toLowerCase()   | 可选值: 'en', 'zh-cn', 'zh-tw'                                                                          |
 | screenshot           | false                              | 开启截图，如果开启，视频和视频封面需要允许跨域                                                          |
 | hotkey               | true                               | 开启热键，支持快进、快退、音量控制、播放暂停                                                            |
+| airplay              | true                               | 在 Safari 中开启 AirPlay                                                                                |
 | preload              | 'auto'                             | 视频预加载，可选值: 'none', 'metadata', 'auto'                                                          |
 | volume               | 0.7                                | 默认音量，请注意播放器会记忆用户设置，用户手动设置音量后默认音量即失效                                  |
+| playbackSpeed        | [0.5, 0.75, 1, 1.25, 1.5, 2]       | 可选的播放速率，可以设置成自定义的数组                                                                  |
 | logo                 | -                                  | 在左上角展示一个 logo，你可以通过 CSS 调整它的大小和位置                                                |
 | apiBackend           | -                                  | 自定义获取和发送弹幕行为，见[#直播](#直播)                                                              |
 | video                | -                                  | 视频信息                                                                                                |
@@ -456,7 +449,6 @@ const option = {
 }"></DPlayer>
 
 ```html
-<link rel="stylesheet" href="DPlayer.min.css" />
 <div id="dplayer"></div>
 <script src="hls.min.js"></script>
 <script src="DPlayer.min.js"></script>
@@ -501,7 +493,6 @@ const dp = new DPlayer({
 需要在 `DPlayer.min.js` 前面加载 [dash.js](https://github.com/Dash-Industry-Forum/dash.js)。
 
 ```html
-<link rel="stylesheet" href="DPlayer.min.css" />
 <div id="dplayer"></div>
 <script src="dash.min.js"></script>
 <script src="DPlayer.min.js"></script>
@@ -544,7 +535,6 @@ const dp = new DPlayer({
 需要在 `DPlayer.min.js` 前面加载 [shaka-player.compiled.js](https://github.com/google/shaka-player)。
 
 ```html
-<link rel="stylesheet" href="DPlayer.min.css" />
 <div id="dplayer"></div>
 <script src="shaka-player.compiled.js"></script>
 <script src="DPlayer.min.js"></script>
@@ -580,7 +570,6 @@ const dp = new DPlayer({
 }"></DPlayer>
 
 ```html
-<link rel="stylesheet" href="DPlayer.min.css" />
 <div id="dplayer"></div>
 <script src="flv.min.js"></script>
 <script src="DPlayer.min.js"></script>
@@ -595,7 +584,13 @@ const dp = new DPlayer({
     },
     pluginOptions: {
         flv: {
-            // flv config
+            // refer to https://github.com/bilibili/flv.js/blob/master/docs/api.md#flvjscreateplayer
+            mediaDataSource: {
+                // mediaDataSource config
+            },
+            config: {
+                // config
+            },
         },
     },
 });
@@ -635,7 +630,6 @@ const dp = new DPlayer({
 }"></DPlayer>
 
 ```html
-<link rel="stylesheet" href="DPlayer.min.css" />
 <div id="dplayer"></div>
 <script src="webtorrent.min.js"></script>
 <script src="DPlayer.min.js"></script>
@@ -692,7 +686,6 @@ const dp = new DPlayer({
 DPlayer 可以通过 `customType` 参数与任何 MSE 库一起使用
 
 ```html
-<link rel="stylesheet" href="DPlayer.min.css" />
 <div id="dplayer"></div>
 <script src="pearplayer.js"></script>
 <script src="DPlayer.min.js"></script>
@@ -741,7 +734,7 @@ const dp = new DPlayer({
             callback();
         },
         send: function (endpoint, danmakuData, callback) {
-            console.log('Pretend to send danamku via WebSocket', danmakuData);
+            console.log('Pretend to send danmaku via WebSocket', danmakuData);
             callback();
         },
     },
@@ -756,7 +749,7 @@ const dp = new DPlayer({
 
 ```js
 const danmaku = {
-    text: 'Get a danamku via WebSocket',
+    text: 'Get a danmaku via WebSocket',
     color: '#fff',
     type: 'right',
 };
